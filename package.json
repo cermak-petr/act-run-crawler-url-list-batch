@@ -1,0 +1,16 @@
+{ 
+  "name": "run-crawler-url-list-batch",
+  "version": "1.0.0",
+  "description": "Apify act for starting crawler runs for a specified list of URLs.",
+  "main": "main.js",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cermak-petr/act-run-crawler-url-list-batch"
+  },
+  "dependencies": {
+    "apify": "latest",
+    "bluebird": "latest",
+    "underscore": "latest"
+  }
+}
