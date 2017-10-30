@@ -49,7 +49,7 @@ async function runBatches(urls, key, count){
         await waitForExecs(execs);
         state.execIds = state.execIds.concat(execs);
         state.offset += count;
-        console.log('finished: ' + offset + '/' + urls.length);
+        console.log('finished: ' + state.offset + '/' + urls.length);
         await Apify.setValue('STATE', state);
     }
     return execIds;
