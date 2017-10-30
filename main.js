@@ -43,14 +43,14 @@ async function waitForExecs(execIds){
 }
 
 async function runBatches(urls, key, count){
-    let offset = 0;
-    let execIds = [];
-    while(offset <= urls.length){
-        const execs = await startRuns(urls, key, offset, count);
+    const state = (await Apify.getValue('STATE')) || {offset: 0, execIds: []};
+    while(state.offset <= urls.length){
+        const execs = await startRuns(urls, key, state.offset, count);
         await waitForExecs(execs);
-        execIds = execIds.concat(execs);
-        offset += count;
+        state.execIds = state.execIds.concat(execs);
+        state.offset += count;
         console.log('finished: ' + offset + '/' + urls.length);
+        await Apify.setValue('STATE', state);
     }
     return execIds;
 }
