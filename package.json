@@ -9,8 +9,8 @@
     "url": "https://github.com/cermak-petr/act-run-crawler-url-list-batch"
   },
   "dependencies": {
-    "apify": "latest",
-    "bluebird": "latest",
-    "underscore": "latest"
+    "apify": "^0.4.36",
+    "bluebird": "^3.5.1",
+    "underscore": "^1.8.3"
   }
 }
