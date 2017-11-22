@@ -7,6 +7,7 @@ async function startRuns(urls, key, offset, limit){
     const execIds = [];
     const execPromises = [];
     const urlSlice = limit ? urls.slice(offset, offset + limit) : urls;
+    console.log('urls to start: ' + urlSlice.length);
     _.each(urlSlice, function(url){
         console.log('starting execution, url: ' + url);
         const ePromise = Apify.client.crawlers.startExecution({settings: {startUrls: [{key: key, value: url}]}});
@@ -45,11 +46,12 @@ async function waitForExecs(execIds){
 async function runBatches(urls, key, count){
     const state = (await Apify.getValue('STATE')) || {offset: 0, execIds: []};
     while(state.offset <= urls.length){
+        state.offset = parseInt(state.offset);
         const execs = await startRuns(urls, key, state.offset, count);
         await waitForExecs(execs);
         state.execIds = state.execIds.concat(execs);
         state.offset += count;
-        console.log('finished: ' + offset + '/' + urls.length);
+        console.log('finished: ' + state.offset + '/' + urls.length);
         await Apify.setValue('STATE', state);
     }
     return state.execIds;
@@ -66,7 +68,7 @@ Apify.main(async () => {
         return null;
     }
     Apify.client.setOptions({crawlerId: input.crawlerId});
-    const execIds = await runBatches(input.urls, input.label || '', input.batch || 5);
+    const execIds = await runBatches(input.urls, input.label || '', parseInt(input.batch) || 5);
     await Apify.setValue('OUTPUT', {executionIds: execIds});
     console.dir(execIds);
 });
